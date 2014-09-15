@@ -12,10 +12,32 @@
  *  
  *  ETEC Pedro Ferreira Alves @ 1 EMIA 2014
  */
- void setup() {
-   
- }
+
+#include <Ultrasonic.h>
+
+// Pinos do sensor ultrasonico
+#define echoPin 1 // Echo Pin
+#define trigPin 2 // Trigger Pin
+
+#define testLed 4 // Led usada para os testes iniciais
+
+void setup() {
+  Serial.begin(9600); // inicia o serial
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(testLed, OUTPUT);
+}
  
- void loop() {
+void loop() {
    
- }
+}
+
+// linguagem para os deficientes visuais
+void vibracall() {
+  
+}
+
+void fonebeep() {
+  
+}
+
