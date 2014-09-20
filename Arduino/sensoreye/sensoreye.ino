@@ -113,6 +113,10 @@ void linguagem(int distancia) {
     float centimetros = distancia;
     float metros = centimetros * 100;
     
+    if(centimetros > 450) {
+       return; // HC-SR04 não suporta mais que essa distância 
+    }
+    
     // objetos pertos (em cm)
     if(distancia < 100){
     
