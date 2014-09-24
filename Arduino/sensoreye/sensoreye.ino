@@ -82,8 +82,8 @@ float atualizarSensor() {
       Serial.print("cm, ");
       Serial.print(distanciaCM / 100);
       Serial.print("m, Ping: ");
-      Serial.print(microsec);
-      Serial.print(" ms")
+      Serial.print(ping);
+      Serial.print(" ms");
       Serial.println();
     }
     
