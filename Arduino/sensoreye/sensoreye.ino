@@ -27,9 +27,11 @@ const int pinoLed = 13; // led usada para os testes iniciais
 const int pinoVibracall = 5; // vibracall
 const int pinoBotao1 = 6; // botao para alguma função
 const int pinoBotao2 = 8; // botao para outra função
+const int tempoAtualizacao = 100; // em microsegundos
 
 Ultrasonic ultrasonic(pinoDisparador, pinoEco);
 int ultimoCM = 0;
+unsigned long time;
    
 void setup() {
   Serial.begin(9600); // inicia o serial
@@ -38,7 +40,7 @@ void setup() {
   if(debug){
     Serial.println("Projeto SensorEYE");
     Serial.println("Escrito por Eduardo Ramos @ 1 EMIA");
-    Serial.println("Versao: 1.1 ALPHA");
+    Serial.println("Versao: 1.3 ALPHA");
     Serial.println("Compilado em " __DATE__ " as " __TIME__);
     Serial.println(); // nova linha
   }
@@ -50,13 +52,19 @@ void setup() {
   pinMode(pinoBotao2, INPUT);
   
   inicializar();
+  time = millis();
 }
  
 void loop() {
-   float distancia = atualizarSensor();
-   linguagem(distancia);
-
-   delay(100);
+   int distancia = atualizarSensor();
+   
+   //if(millis() - time > 1000) { // vibra apenas após 1 segundo
+     linguagem(distancia);
+   //}
+   
+   
+    
+   delay(tempoAtualizacao);
 }
 
 void inicializar() {
@@ -71,10 +79,9 @@ void inicializar() {
   }  
 }
 
-// funcao do ultrasonico
 float atualizarSensor() {
-    long ping = ultrasonic.timing();
-    int distanciaCM = ultrasonic.convert(ping, Ultrasonic::CM);
+    long pingSec = ultrasonic.timing();
+    int distanciaCM = ultrasonic.convert(pingSec, Ultrasonic::CM);
   
     if(debug) {
       Serial.print("Distancia: ");
@@ -82,7 +89,7 @@ float atualizarSensor() {
       Serial.print("cm, ");
       Serial.print(distanciaCM / 100);
       Serial.print("m, Ping: ");
-      Serial.print(ping);
+      Serial.print(pingSec);
       Serial.print(" ms");
       Serial.println();
     }
@@ -91,13 +98,13 @@ float atualizarSensor() {
 }
 
 // !!vibracação tem que ser maior que 100 para sentir
-void vibracall(int intensidade) {
+void vibracall(int intensidade) {  
   if(intensidade > 255){
      intensidade = 255; // previne ser maior que 255 
   }
   
   if(debug) {
-    Serial.print("Vibrando! Com intensidade de ");
+    Serial.print("Vibracall funcionando! Com intensidade de ");
     Serial.print(intensidade);
     Serial.println();
   }
@@ -106,36 +113,125 @@ void vibracall(int intensidade) {
 }
 
 void linguagem(int distancia) {
-    float centimetros = distancia;
-    float metros = centimetros * 100;
+    float cm = distancia;
+    time = millis();
     
-    if(centimetros > 450) {
+    if(cm > 450) {
        return; // HC-SR04 não suporta mais que essa distância 
     }
     
-    if(centimetros == ultimoCM || centimetros == ultimoCM + 1 || centimetros == ultimoCM - 1 ||
-       centimetros == ultimoCM + 2 || centimetros == ultimoCM - 2){
-        ultimoCM = centimetros; // continua apenas com uma diferença muito grande, ou se nao fica vibrando toda hora  
+    if(cm == ultimoCM ||
+       cm == ultimoCM + 1 || cm == ultimoCM - 1 ||
+       cm == ultimoCM + 2 || cm == ultimoCM - 2 ||
+       cm == ultimoCM + 3 || cm == ultimoCM - 3 ||
+       cm == ultimoCM + 4 || cm == ultimoCM - 4 ||
+       cm == ultimoCM + 5 || cm == ultimoCM - 5 ||
+       cm == ultimoCM + 6 || cm == ultimoCM - 6 ||
+       cm == ultimoCM + 7 || cm == ultimoCM - 7 ||
+       cm == ultimoCM + 8 || cm == ultimoCM - 8 ||
+       cm == ultimoCM + 9 || cm == ultimoCM - 9 ||
+       cm == ultimoCM + 10 || cm == ultimoCM - 10 ||
+       cm == ultimoCM + 11 || cm == ultimoCM - 11 ||
+       cm == ultimoCM + 12 || cm == ultimoCM - 12 ||
+       cm == ultimoCM + 13 || cm == ultimoCM - 13 ||
+       cm == ultimoCM + 14 || cm == ultimoCM - 14 ||
+       cm == ultimoCM + 15 || cm == ultimoCM - 15 ||
+       cm == ultimoCM + 16 || cm == ultimoCM - 16 ||
+       cm == ultimoCM + 17 || cm == ultimoCM - 17 ||
+       cm == ultimoCM + 18 || cm == ultimoCM - 18 ||
+       cm == ultimoCM + 19 || cm == ultimoCM - 19 ||
+       cm == ultimoCM + 20 || cm == ultimoCM - 20 ||
+       cm == ultimoCM + 21 || cm == ultimoCM - 21 ||
+       cm == ultimoCM + 22 || cm == ultimoCM - 22 ||
+       cm == ultimoCM + 23 || cm == ultimoCM - 23 ||
+       cm == ultimoCM + 24 || cm == ultimoCM - 24 ||
+       cm == ultimoCM + 25 || cm == ultimoCM - 25 ||
+       cm == ultimoCM + 26 || cm == ultimoCM - 26 ||
+       cm == ultimoCM + 27 || cm == ultimoCM - 27 ||
+       cm == ultimoCM + 28 || cm == ultimoCM - 28 ||
+       cm == ultimoCM + 29 || cm == ultimoCM - 29 ||
+       cm == ultimoCM + 30 || cm == ultimoCM - 30){
+        ultimoCM = cm; // continua apenas com uma diferença muito grande, ou se nao fica vibrando toda hora  
         return;
     }
     
-    if(centimetros < 5) {
-      vibracall(200);
-      delay(2000);
-      vibracall(0); 
-     }
-   
-     if(centimetros > 5 && centimetros < 10){
-       vibracall(150);
-       delay(1000);
-       vibracall(0); 
-     }
-   
-     if(centimetros > 10 && centimetros < 20) {
-        vibracall(100);
-        delay(500);
-        vibracall(0); 
-     }
-   
-   ultimoCM = centimetros;
+    // SensorEYE modo casa, curtas distancias
+    if(ligado == false) {
+      ultimoCM = cm;
+      return; 
+    }
+    
+    if(modoCasa) {
+       if(cm > 400) {
+          
+       }
+       
+       if(cm > 350 && cm < 400) {
+         vibracall(35);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+       if(cm > 300 && cm < 350) {
+         vibracall(60);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+       if(cm > 250 && cm < 300) {
+         vibracall(80);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+       if(cm > 200 && cm < 250) {
+         vibracall(95);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+       if(cm > 150 && cm < 200) {
+         vibracall(110);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+       if(cm > 100 && cm < 150) {
+         vibracall(125);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+       if(cm > 90 && cm < 100) {
+         vibracall(155);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+       if(cm > 60 && cm < 90) {
+         vibracall(205);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+       if(cm > 30 && cm < 60) {
+         vibracall(255);
+         delay(500);
+         vibracall(0);
+         delay(300);
+       }
+       
+    } else {
+      
+    }
+
+   ultimoCM = cm;
 }
