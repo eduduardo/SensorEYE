@@ -42,7 +42,7 @@ void setup() {
   if(debug){
     Serial.println("Projeto SensorEYE");
     Serial.println("Escrito por Eduardo Ramos @ 1 EMIA");
-    Serial.println("Versao: 2.0 BETA");
+    Serial.println("Versao: 2.1 BETA");
     Serial.println("Compilado em " __DATE__ " as " __TIME__);
     Serial.println(); // nova linha
   }
@@ -70,7 +70,7 @@ void inicializar() {
   
   // duas vibrações iniciais para teste junto ao led de status
   for (int i = 0; i < 2; i++){
-     vibracall(SENS_ALTA, 500, 400);
+     vibracall(SENS_ALTA, 1000, 1000);
   } 
   
   digitalWrite(pinoLed, HIGH); // liga o led de status
@@ -88,7 +88,13 @@ float atualizarSensor() {
       Serial.print(" metros, Ping: ");
       Serial.print(pingSegundos);
       Serial.print(" ms");
+      
+      if(cm > 3000) {
+         Serial.print(" - Erro: Fora do alcance!!") ;
+      }
       Serial.println();
+      
+      
     }
     
     return cm;
@@ -121,20 +127,17 @@ void linguagem(int distancia) {
        return; // HC-SR04 não suporta mais que essa distância 
     }
     
+    
     if(cm == ultimoCM ||
-       cm == ultimoCM + 1 || cm == ultimoCM - 1 ||
-       cm == ultimoCM + 2 || cm == ultimoCM - 2 ||
-       cm == ultimoCM + 3 || cm == ultimoCM - 3 ||
-       cm == ultimoCM + 4 || cm == ultimoCM - 4 ||
-       cm == ultimoCM + 5 || cm == ultimoCM - 5 ||
-       cm == ultimoCM + 6 || cm == ultimoCM - 6 ||
-       cm == ultimoCM + 7 || cm == ultimoCM - 7 ||
-       cm == ultimoCM + 8 || cm == ultimoCM - 8 ||
-       cm == ultimoCM + 9 || cm == ultimoCM - 9 ||
-       cm == ultimoCM + 10 || cm == ultimoCM - 10){
-        ultimoCM = cm; // continua apenas com uma diferença muito grande, ou se nao fica vibrando toda hora  
-        return;
-    }
+         cm == ultimoCM + 1 || cm == ultimoCM - 1 ||
+         cm == ultimoCM + 2 || cm == ultimoCM - 2 ||
+         cm == ultimoCM + 3 || cm == ultimoCM - 3 ||
+         cm == ultimoCM + 4 || cm == ultimoCM - 4 ||
+         cm == ultimoCM + 5 || cm == ultimoCM - 5){
+          ultimoCM = cm; // continua apenas com uma diferença muito grande, ou se nao fica vibrando toda hora  
+          return;
+      }
+   
     
     // SensorEYE modo casa, curtas distancias
     if(ligado == false) {
@@ -145,19 +148,25 @@ void linguagem(int distancia) {
     /////////////////////////////////////////
     // vibrações de acordo com a distância //
     ///////////////////////////////////////// 
-    if(cm > 0 && cm <= 20) {
-        vibracall(SENS_ALTA, 800, 800);
+    
+    
+    // distancia da aba do boné // 8 cm
+    if(cm > 0 && cm < 8){
+       vibracall(255, 1000, 1000); 
+    }
+   
+    if(cm > 8 && cm <= 70) {
+        vibracall(255, 1000, 1000);
     }
     
-    if(cm > 20 && cm <= 60) {
-         vibracall(SENS_MEDIA, 500, 500); 
+    if(cm > 70 && cm <= 120) {
+         vibracall(SENS_MEDIA, 800, 800); 
     }
     
-    if(metros == 1){
-         vibracall(SENS_MEDIA, 300, 300);
-    } else if(metros == 2) {
-         vibracall(SENS_BAIXA, 500, 500);
+    if(cm > 120 && cm < 190) {
+       vibracall(SENS_MEDIA, 800, 800); 
     }
+    
     
    ultimoCM = cm;
 }
