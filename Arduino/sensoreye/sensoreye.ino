@@ -24,19 +24,17 @@
 #include <Ultrasonic.h>
 
 // debug mode
-const boolean debug = true, ligado = true; // controle pelo botao1
+const boolean debug = true;
 
 // pinos de todos os componentes
 const int pinoEco = 12, // sensor; echoPin
           pinoDisparador = 7, // sensor triggerPin
-          pinoLed = 13, // led usada para os testes iniciais
           pinoVibracall = 5, // vibracall
-          tempoAtualizacao = 10, // em microsegundos
+          tempoLoop = 10, // em microsegundos
           SENS_ALTA  = 250, // sensibilidade do vibracall
           SENS_MEDIA = 150,
           SENS_BAIXA = 90;
  
-
 // inicia o ultrassonico
 Ultrasonic ultrasonic(pinoDisparador, pinoEco);
 
@@ -58,7 +56,6 @@ void setup() {
   pinMode(pinoEco, INPUT);
   pinMode(pinoDisparador, OUTPUT);
   pinMode(pinoVibracall, OUTPUT);
-  pinMode(pinoLed, OUTPUT);
   
   inicializar();
 }
@@ -70,7 +67,7 @@ void loop() {
      linguagem(distancia);
    }
      
-   delay(tempoAtualizacao);
+   delay(tempoLoop);
 }
 
 void inicializar() {
