@@ -42,10 +42,9 @@ int ultimoCM = 0;
 unsigned long time;
    
 void setup() {
-  Serial.begin(9600); // inicia o serial
-  
   // mensagem inicial
   if(debug){
+    Serial.begin(9600); // inicia o serial
     Serial.println("Projeto SensorEYE");
     Serial.println("Escrito por Eduardo Ramos @ 1 EMIA");
     Serial.println("Versao: 2.1 BETA");
@@ -56,6 +55,10 @@ void setup() {
   pinMode(pinoEco, INPUT);
   pinMode(pinoDisparador, OUTPUT);
   pinMode(pinoVibracall, OUTPUT);
+  
+  // desliga o led da placa Arduino para economizar bateria
+  pinMode(13, OUTPUT);
+  digitalWrite(13, LOW);
   
   inicializar();
 }
@@ -98,8 +101,6 @@ float atualizarSensor() {
          Serial.print(" - Erro: Fora do alcance!!") ;
       }
       Serial.println();
-      
-      
     }
     
     return cm;
