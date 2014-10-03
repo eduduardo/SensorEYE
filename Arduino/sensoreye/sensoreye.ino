@@ -1,14 +1,22 @@
 /*
- *  Sensoreye Program
+ *  SensorEYE
  * 
- *  Equipamento para deficientes visuais criado com um chapéu/boné usando um sensor ultrassônico 
- *  preso junto há também um fone ou pulseira que irá emitir sons ou vibrações de acordo com a 
- *  distância de objetos/obstáculos
+ *  Equipamento para deficientes visuais consituido de um boné, um sensor ultrassônico (HC-SR04) 
+ *  uma pulseir e um vibracall que irá emitir vibrações de acordo com a distância 
+ *  de objeto ou obstáculos.
  *
- *  Autores:
+ *  Equipe:
+ *  Ana Lacreta
+ *  Brenda Conttessotto
+ *  Caio Eduardo
  *  Eduardo Augusto Ramos
- *  Filipe Dias Gianotto
  *  Felipe Pereira Jorge
+ *  Filipe Dias Gianotto
+ *  Gabriel Filipe Ferreira
+ *  Gustavo Elias
+ *  Gustavo Oliveira
+ *  Vitória Tenório
+ *  Márcio Cibelli Bombo  
  *  
  *  ETEC Pedro Ferreira Alves @ 1 EMIA 2014
  */
