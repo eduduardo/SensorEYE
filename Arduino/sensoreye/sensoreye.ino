@@ -30,10 +30,7 @@ const boolean debug = true;
 const int pinoEco = 12, // sensor; echoPin
           pinoDisparador = 7, // sensor triggerPin
           pinoVibracall = 5, // vibracall
-          tempoLoop = 10, // em microsegundos
-          SENS_ALTA  = 250, // sensibilidade do vibracall
-          SENS_MEDIA = 150,
-          SENS_BAIXA = 90;
+          tempoLoop = 10; // em microsegundos
  
 // inicia o ultrassonico
 Ultrasonic ultrasonic(pinoDisparador, pinoEco);
@@ -47,7 +44,7 @@ void setup() {
     Serial.begin(9600); // inicia o serial
     Serial.println("Projeto SensorEYE");
     Serial.println("Escrito por Eduardo Ramos @ 1 EMIA");
-    Serial.println("Versao: 2.1 BETA");
+    Serial.println("Versao: 3.0 LAMBDA");
     Serial.println("Compilado em " __DATE__ " as " __TIME__);
     Serial.println(); // nova linha
   }
@@ -78,10 +75,8 @@ void inicializar() {
   
   // duas vibrações iniciais para teste junto ao led de status
   for (int i = 0; i < 2; i++){
-     vibracall(SENS_ALTA, 1000, 1000);
-  } 
-  
-  digitalWrite(pinoLed, HIGH); // liga o led de status
+     vibracall(255, 1000, 1000);
+  }
 }
 
 float atualizarSensor() {
@@ -143,18 +138,10 @@ void linguagem(int distancia) {
           ultimoCM = cm; // continua apenas com uma diferença muito grande, ou se nao fica vibrando toda hora  
           return;
       }
-   
-    
-    // SensorEYE modo casa, curtas distancias
-    if(ligado == false) {
-      ultimoCM = cm;
-      return; 
-    }
     
     /////////////////////////////////////////
     // vibrações de acordo com a distância //
     ///////////////////////////////////////// 
-    
     
     // distancia da aba do boné // 8 cm
     if(cm > 0 && cm < 8){
@@ -166,11 +153,15 @@ void linguagem(int distancia) {
     }
     
     if(cm > 70 && cm <= 120) {
-         vibracall(SENS_MEDIA, 800, 800); 
+         vibracall(190, 800, 800); 
     }
     
-    if(cm > 120 && cm < 190) {
-       vibracall(SENS_MEDIA, 800, 800); 
+    if(cm > 120 && cm <= 190) {
+       vibracall(150, 800, 800); 
+    }
+    
+    if(cm > 190 && cm < 240) {
+       vibracall(120, 800, 800); 
     }
     
     
