@@ -24,7 +24,7 @@
 #include <Ultrasonic.h>
 
 // debug mode
-const boolean debug = true;
+const boolean debug = false;
 
 // pinos de todos os componentes
 const int pinoEco = 12, // sensor; echoPin
