@@ -30,7 +30,7 @@ const boolean debug = false;
 const int pinoEco = 12, // sensor; echoPin
           pinoDisparador = 7, // sensor triggerPin
           pinoVibracall = 5, // vibracall
-          tempoLoop = 10; // em microsegundos
+          tempoLoop = 0; // em microsegundos
  
 // inicia o ultrassonico
 Ultrasonic ultrasonic(pinoDisparador, pinoEco);
@@ -39,9 +39,10 @@ int ultimoCM = 0;
 unsigned long time;
    
 void setup() {
-  // mensagem inicial
   if(debug){
     Serial.begin(9600); // inicia o serial
+    
+    // mensagem inicial
     Serial.println("Projeto SensorEYE");
     Serial.println("Escrito por Eduardo Ramos @ 1 EMIA");
     Serial.println("Versao: 3.0 LAMBDA");
@@ -53,11 +54,17 @@ void setup() {
   pinMode(pinoDisparador, OUTPUT);
   pinMode(pinoVibracall, OUTPUT);
   
+  // tempo inicial interno
+  time = millis();
+  
+  // duas vibrações iniciais para teste junto ao led de status
+  for (int i = 0; i < 2; i++){
+     vibracall(255, 1000, 1000);
+  }
+  
   // desliga o led da placa Arduino para economizar bateria
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
-  
-  inicializar();
 }
  
 void loop() {
@@ -68,15 +75,6 @@ void loop() {
    }
      
    delay(tempoLoop);
-}
-
-void inicializar() {
-  time = millis();
-  
-  // duas vibrações iniciais para teste junto ao led de status
-  for (int i = 0; i < 2; i++){
-     vibracall(255, 1000, 1000);
-  }
 }
 
 float atualizarSensor() {
@@ -128,7 +126,6 @@ void linguagem(int distancia) {
        return; // HC-SR04 não suporta mais que essa distância 
     }
     
-    
     if(cm == ultimoCM ||
          cm == ultimoCM + 1 || cm == ultimoCM - 1 ||
          cm == ultimoCM + 2 || cm == ultimoCM - 2 ||
@@ -153,17 +150,15 @@ void linguagem(int distancia) {
     }
     
     if(cm > 70 && cm <= 120) {
-         vibracall(190, 800, 800); 
+      vibracall(190, 800, 800); 
     }
     
     if(cm > 120 && cm <= 190) {
-       vibracall(150, 800, 800); 
+      vibracall(150, 800, 800); 
     }
     
     if(cm > 190 && cm < 240) {
-       vibracall(120, 800, 800); 
+      vibracall(120, 800, 800); 
     }
-    
-    
    ultimoCM = cm;
 }
