@@ -70,7 +70,7 @@ void setup() {
 void loop() {
    int distancia = atualizarSensor();
    
-   if(millis() - time > 500) { // intervalo de meio segundo para vibrar novamente, impede que fique vibrando demais
+   if(millis() - time > 1000) { // intervalo de um segundo para vibrar novamente, impede que fique vibrando demais
      linguagem(distancia);
    }
      
@@ -126,7 +126,9 @@ void linguagem(int distancia) {
        return; // HC-SR04 não suporta mais que essa distância 
     }
     
-    if(cm == ultimoCM ||
+    if(cm <= 80) {
+    
+      if(cm == ultimoCM ||
          cm == ultimoCM + 1 || cm == ultimoCM - 1 ||
          cm == ultimoCM + 2 || cm == ultimoCM - 2 ||
          cm == ultimoCM + 3 || cm == ultimoCM - 3 ||
@@ -135,30 +137,54 @@ void linguagem(int distancia) {
           ultimoCM = cm; // continua apenas com uma diferença muito grande, ou se nao fica vibrando toda hora  
           return;
       }
+      
+    } else {
+      
+      
+      if(cm == ultimoCM ||
+         cm == ultimoCM + 1 || cm == ultimoCM - 1 ||
+         cm == ultimoCM + 2 || cm == ultimoCM - 2 ||
+         cm == ultimoCM + 3 || cm == ultimoCM - 3 ||
+         cm == ultimoCM + 4 || cm == ultimoCM - 4 ||
+         cm == ultimoCM + 5 || cm == ultimoCM - 5 ||
+         cm == ultimoCM + 6 || cm == ultimoCM - 6 ||
+         cm == ultimoCM + 7 || cm == ultimoCM - 7 ||
+         cm == ultimoCM + 8 || cm == ultimoCM - 8 ||
+         cm == ultimoCM + 9 || cm == ultimoCM - 9 ||
+         cm == ultimoCM + 10 || cm == ultimoCM - 10 ||
+         cm == ultimoCM + 11 || cm == ultimoCM - 11 ||
+         cm == ultimoCM + 12 || cm == ultimoCM - 12 ||
+         cm == ultimoCM + 13 || cm == ultimoCM - 13 ||
+         cm == ultimoCM + 13 || cm == ultimoCM - 14 ||
+         cm == ultimoCM + 15 || cm == ultimoCM - 15){
+          ultimoCM = cm;  
+          return;
+      }  
+    }
     
     /////////////////////////////////////////
     // vibrações de acordo com a distância //
     ///////////////////////////////////////// 
     
     // distancia da aba do boné // 8 cm
-    if(cm > 0 && cm < 8){
-       vibracall(255, 1000, 1000); 
+    if(cm > 0 && cm < 30){
+       vibracall(255, 1200, 1200); 
     }
    
-    if(cm > 8 && cm <= 70) {
-        vibracall(255, 1000, 1000);
+    if(cm > 30 && cm <= 80) {
+        vibracall(200, 1000, 1000);
     }
     
-    if(cm > 70 && cm <= 120) {
-      vibracall(190, 800, 800); 
+    if(cm > 80 && cm <= 120) {
+      vibracall(160, 800, 800); 
     }
     
     if(cm > 120 && cm <= 190) {
-      vibracall(150, 800, 800); 
+      vibracall(120, 700, 700); 
     }
     
     if(cm > 190 && cm < 240) {
-      vibracall(120, 800, 800); 
+      vibracall(100, 500, 500); 
     }
    ultimoCM = cm;
 }
