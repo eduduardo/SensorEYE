@@ -27,10 +27,10 @@ const boolean debug = true;
 // pinos de todos os componentes
 const int pinoEco = 12, // sensor; echoPin
           pinoDisparador = 7, // sensor triggerPin
-          pinoLedVermelha = 11, // led vermelha
-          pinoLedAmarela  = 12, // led amarela
+          pinoLedVermelha = 9, // led vermelha
+          pinoLedAmarela  = 3, // led amarela
           pinoLedVerde    = 6, // led verde
-          tempoLoop = 0; // em microsegundos
+          tempoLoop = 100; // em microsegundos
  
 // inicia o ultrassonico
 Ultrasonic ultrasonic(pinoDisparador, pinoEco);
@@ -119,7 +119,7 @@ void ligaLed(int pino) {
    }
    
    // desliga tudo
-   digitalWrite(pinoLedVermelho, LOW);
+   digitalWrite(pinoLedVermelha, LOW);
    digitalWrite(pinoLedAmarela, LOW);
    digitalWrite(pinoLedVerde, LOW);
    
@@ -135,41 +135,19 @@ void linguagem(int distancia) {
     if(cm > 450) {
        return; // HC-SR04 não suporta mais que essa distância 
     }
-    
-    if(cm == ultimoCM ||
-         cm == ultimoCM + 1 || cm == ultimoCM - 1 ||
-         cm == ultimoCM + 2 || cm == ultimoCM - 2 ||
-         cm == ultimoCM + 3 || cm == ultimoCM - 3 ||
-         cm == ultimoCM + 4 || cm == ultimoCM - 4 ||
-         cm == ultimoCM + 5 || cm == ultimoCM - 5){
-          ultimoCM = cm; // continua apenas com uma diferença muito grande, ou se nao fica vibrando toda hora  
-          return;
-      }
-    
-    /////////////////////////////////////////
-    // vibrações de acordo com a distância //
-    ///////////////////////////////////////// 
-    
-    // distancia da aba do boné // 8 cm
-    if(cm > 0 && cm < 8){
-        ligaLed(pinoLedVermelha); 
-    }
-   
-    if(cm > 8 && cm <= 70) {
-        ligaLed(pinoLedVermelha);
-    }
-    
-    if(cm > 70 && cm <= 120) {
-        ligaLed(pinoLedAmarela); 
-    }
-    
-    if(cm > 120 && cm <= 190) {
-       ligaLed(pinoLedAmarela); 
-    }
-    
-    if(cm > 190 && cm < 240) {
+       
+    if(cm >= 150) {
        ligaLed(pinoLedVerde); 
     }
+    
+    if(cm >= 80 && cm < 150) {
+       ligaLed(pinoLedAmarela);
+    }
+    
+    if(cm < 80) {
+       ligaLed(pinoLedVermelha); 
+    }
+
     
     ultimoCM = cm;
 }
