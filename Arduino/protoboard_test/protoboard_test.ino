@@ -30,7 +30,7 @@ const int pinoEco = 12, // sensor; echoPin
           pinoLedVermelha = 9, // led vermelha
           pinoLedAmarela  = 3, // led amarela
           pinoLedVerde    = 6, // led verde
-          tempoLoop = 100; // em microsegundos
+          tempoLoop = 0; // em microsegundos
  
 // inicia o ultrassonico
 Ultrasonic ultrasonic(pinoDisparador, pinoEco);
@@ -67,7 +67,7 @@ void setup() {
 void loop() {
    int distancia = atualizarSensor();
    
-   if(millis() - time > 500) { // intervalo de meio segundo para vibrar novamente, impede que fique vibrando demais
+   if(millis() - time > 100) { // intervalo de meio segundo para vibrar novamente, impede que fique vibrando demais
      linguagem(distancia);
    }
      
@@ -131,16 +131,12 @@ void linguagem(int distancia) {
     float cm = distancia;
     float metros = distancia / 100;
     time = millis();
-    
-    if(cm > 450) {
-       return; // HC-SR04 não suporta mais que essa distância 
-    }
        
-    if(cm >= 150) {
+    if(cm >= 100) {
        ligaLed(pinoLedVerde); 
     }
     
-    if(cm >= 80 && cm < 150) {
+    if(cm >= 80 && cm < 100) {
        ligaLed(pinoLedAmarela);
     }
     
