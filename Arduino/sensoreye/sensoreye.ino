@@ -2,7 +2,7 @@
  *  SensorEYE
  * 
  *  Equipamento para deficientes visuais consituido de um boné, um sensor ultrassônico (HC-SR04) 
- *  uma pulseir e um vibracall que irá emitir vibrações de acordo com a distância 
+ *  uma pulseira e um vibracall que irá emitir vibrações de acordo com a distância 
  *  de objeto ou obstáculos.
  *
  *  Equipe:
